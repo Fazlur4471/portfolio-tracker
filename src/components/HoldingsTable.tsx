@@ -1,7 +1,32 @@
-import { TrendingUp, TrendingDown } from 'lucide-react';
+import { TrendingUp, TrendingDown, Trash2 } from 'lucide-react';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function HoldingsTable({ holdings, loading, formatCurrency }: { holdings: any[], loading: boolean, formatCurrency: (val: number) => string }) {
+type Holding = {
+  ticker: string;
+  name: string;
+  qty: number;
+  avgPrice: number;
+  invested: number;
+  currentPrice: number;
+  currentValue: number;
+  dayChange: number;
+  dayChangePercent: number;
+  totalPnl: number;
+  totalPnlPercent: number;
+  currency: string;
+  transactionIds: string[];
+};
+
+export default function HoldingsTable({
+  holdings,
+  loading,
+  formatCurrency,
+  onDelete,
+}: {
+  holdings: Holding[];
+  loading: boolean;
+  formatCurrency: (val: number) => string;
+  onDelete?: (id: string) => void;
+}) {
   if (loading && holdings.length === 0) {
     return (
       <div className="animate-pulse space-y-4">
@@ -19,6 +44,13 @@ export default function HoldingsTable({ holdings, loading, formatCurrency }: { h
     );
   }
 
+  const handleDeleteAll = (transactionIds: string[], ticker: string) => {
+    if (!onDelete) return;
+    if (confirm(`Delete all transactions for ${ticker}? This cannot be undone.`)) {
+      transactionIds.forEach(id => onDelete(id));
+    }
+  };
+
   return (
     <div>
       <h3 className="text-lg font-medium text-white/80 mb-4">Your Holdings</h3>
@@ -31,6 +63,7 @@ export default function HoldingsTable({ holdings, loading, formatCurrency }: { h
             <th className="pb-3 font-medium text-right">LTP</th>
             <th className="pb-3 font-medium text-right">Current Value</th>
             <th className="pb-3 font-medium text-right">Overall P&L</th>
+            <th className="pb-3 font-medium text-right w-10"></th>
           </tr>
         </thead>
         <tbody>
@@ -57,6 +90,17 @@ export default function HoldingsTable({ holdings, loading, formatCurrency }: { h
                 <div className={`text-xs ${h.totalPnlPercent >= 0 ? 'text-emerald-500/80' : 'text-red-500/80'}`}>
                   {h.totalPnlPercent >= 0 ? '+' : ''}{h.totalPnlPercent.toFixed(2)}%
                 </div>
+              </td>
+              <td className="py-4 text-right">
+                {onDelete && (
+                  <button
+                    onClick={() => handleDeleteAll(h.transactionIds, h.ticker)}
+                    className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-red-500/60 hover:text-red-500 hover:bg-red-500/10 transition-all"
+                    title={`Delete all ${h.ticker} transactions`}
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                )}
               </td>
             </tr>
           ))}

@@ -41,3 +41,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
 }
+
+// Delete a holding transaction by id
+export async function DELETE(request: Request) {
+  try {
+    const body = await request.json();
+    const { id } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing transaction id' }, { status: 400 });
+    }
+
+    const { error } = await supabase
+      .from('portfolio_holdings')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+  }
+}
