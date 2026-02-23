@@ -1,0 +1,24 @@
+﻿
+> portfolio-tracker@0.1.0 lint
+> eslint
+
+
+D:\portfolio-tracker\src\app\api\market\route.ts
+  18:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\portfolio-tracker\src\app\api\portfolio\route.ts
+  40:12  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\portfolio-tracker\src\components\AddTransactionModal.tsx
+  42:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\portfolio-tracker\src\components\Dashboard.tsx
+   43:58  error    Unexpected any. Specify a different type                                                                                             @typescript-eslint/no-explicit-any
+   84:6   warning  React Hook useEffect has missing dependencies: 'fetchPortfolio' and 'portfolio'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  179:46  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                      react/no-unescaped-entities
+
+D:\portfolio-tracker\src\components\HoldingsTable.tsx
+  3:90  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Γ£û 7 problems (5 errors, 2 warnings)
+
